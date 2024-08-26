@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 void decimalParaBinario(int numero);
 void decimalParaOcta(int numero);
 void decimalParaHexa(int numero);
+void decimal16bits(int numero);
 
 //Aluno: Breno Monterio Rodrigues Lira
 // 25/08/24: Commit primeria questão, implementando as letras a,b,c e d
+// 25/08/24: Implementado a fucao de 16 bits e complemento a 2
 
 int main(void){
 
@@ -15,7 +18,7 @@ int main(void){
 
     while(1){
 
-        printf("Converter numero de base 10 para:\n1-Binario\n2-Octadecimal\n3-Hexadecimal\n4-Codigo BCD\n");
+        printf("Converter numero de base 10 para:\n1-Binario\n2-Octadecimal\n3-Hexadecimal\n4-Codigo BCD\n5-16 bits(binario)\n");
         scanf("%d", &operacao);
 
         if (operacao!=4){
@@ -120,6 +123,16 @@ int main(void){
             decimalParaHexa(num);
             printf("\n\n");
         }
+        
+        else if (operacao==5){
+            if(num>pow(2,15)-1 || num<-(pow(2,15))){
+                printf("Overflow\n\n");
+            }
+            else{
+                decimal16bits(num);
+                printf("\n");
+            }
+        }
 
     }
 
@@ -168,4 +181,26 @@ void decimalParaHexa(int numero) {
     }
 }
 
+void decimal16bits(int numero) {
+    int binario[16];
+    int i;
 
+    for (i = 0; i < 16; i++) {
+        binario[i] = 0;
+    }
+
+    if (numero < 0) {
+        numero = pow(2,16) + numero;
+    }
+
+    for (i = 15; numero > 0 && i >= 0; i--) {
+        binario[i] = numero % 2;
+        numero = numero/2;
+    }
+
+    printf("O numero em 16 bits: ");
+    for (i = 0; i < 16; i++) {
+        printf("%d", binario[i]);
+    }
+    printf("\n");
+}
